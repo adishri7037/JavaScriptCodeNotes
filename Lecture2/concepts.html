@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Variables, Data Types & Type Conversion</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 1000px; margin: auto; padding: 30px; }
+    code, pre { background: #f4f4f4; padding: 3px 6px; border-radius: 4px; }
+    pre { padding: 15px; overflow-x: auto; }
+    h1, h2 { color: #222; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #bbb; padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+<h1>JavaScript Variables, Data Types & Type Conversion</h1>
+
+<h2>1. Variables</h2>
+<p>A variable is a named storage location used to hold a value. JavaScript provides
+<code>var</code>, <code>let</code>, and <code>const</code>.</p>
+<pre><code>let studentName = "Rahul";
+let age = 21;
+console.log(studentName, age);</code></pre>
+
+<h2>2. var, let and const</h2>
+<table>
+<tr><th>Feature</th><th>var</th><th>let</th><th>const</th></tr>
+<tr><td>Scope</td><td>Function</td><td>Block</td><td>Block</td></tr>
+<tr><td>Reassignment</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+<tr><td>Redeclaration in same scope</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td>Initialization required</td><td>No</td><td>No</td><td>Yes</td></tr>
+<tr><td>Modern recommendation</td><td>Usually avoid</td><td>Use when value changes</td><td>Use by default when no reassignment</td></tr>
+</table>
+
+<h3>var</h3>
+<pre><code>var age = 20;
+age = 21;          // allowed
+var age = 22;      // redeclaration allowed
+console.log(age);</code></pre>
+
+<h3>let</h3>
+<pre><code>let score = 50;
+score = 80;        // allowed
+// let score = 90; // error: cannot redeclare in same scope</code></pre>
+
+<h3>const</h3>
+<pre><code>const pi = 3.14159;
+// pi = 3.14;      // error: reassignment is not allowed</code></pre>
+
+<p><strong>Important:</strong> <code>const</code> prevents reassignment of the variable.
+It does not make an object or array immutable.</p>
+<pre><code>const student = { name: "Rahul", age: 21 };
+student.age = 22; // allowed
+
+// student = { name: "Amit" }; // not allowed</code></pre>
+
+<h2>3. Naming Conventions</h2>
+<ul>
+<li>Use meaningful names.</li>
+<li>Use camelCase for normal JavaScript variables.</li>
+<li>Do not start with a digit.</li>
+<li>No spaces are allowed.</li>
+<li>Do not use reserved keywords.</li>
+</ul>
+<pre><code>let firstName = "Rahul";
+let totalMarks = 450;
+let isLoggedIn = true;
+let studentCount = 60;</code></pre>
+
+<h2>4. Reassignment</h2>
+<pre><code>let marks = 70;
+marks = 85;
+console.log(marks); // 85</code></pre>
+<p>Reassignment changes the value stored in an existing variable.</p>
+
+<h2>5. Primitive Values</h2>
+<p>JavaScript primitive types include string, number, bigint, boolean, undefined,
+symbol, and null.</p>
+<pre><code>let name = "Aditya";        // string
+let age = 21;               // number
+let price = 99.99;          // number
+let active = true;          // boolean
+let result;                 // undefined
+let empty = null;           // null
+let large = 123n;           // bigint
+let id = Symbol("id");      // symbol</code></pre>
+
+<h2>6. Reference Types</h2>
+<p>Objects, arrays and functions are reference values. Multiple variables can refer
+to the same object.</p>
+<pre><code>let student1 = { name: "Rahul" };
+let student2 = student1;
+
+student2.name = "Amit";
+
+console.log(student1.name); // Amit</code></pre>
+
+<p>Conceptually:</p>
+<pre><code>student1 ──┐
+           ├──> { name: "Amit" }
+student2 ──┘</code></pre>
+
+<h2>7. typeof Operator</h2>
+<pre><code>console.log(typeof "Hello");      // string
+console.log(typeof 42);            // number
+console.log(typeof true);           // boolean
+console.log(typeof undefined);      // undefined
+console.log(typeof {});             // object
+console.log(typeof []);             // object
+console.log(typeof function() {});  // function</code></pre>
+
+<h3>Special case: null</h3>
+<pre><code>console.log(typeof null); // "object"</code></pre>
+<p>This is a historical JavaScript quirk. <code>null</code> represents intentional
+absence of a value; it should not be taught as an actual object.</p>
+
+<h3>Special case: NaN</h3>
+<pre><code>let result = 10 / "hello";
+console.log(result);              // NaN
+console.log(typeof result);       // number
+console.log(Number.isNaN(result)); // true</code></pre>
+<p><code>NaN</code> means "Not-a-Number" and is a special value of the JavaScript
+number type.</p>
+
+<h2>8. Explicit Type Conversion</h2>
+<p>The programmer intentionally converts a value.</p>
+<pre><code>let text = "100";
+let number = Number(text);
+
+console.log(number);        // 100
+console.log(typeof number); // number
+
+console.log(String(21));    // "21"
+console.log(Boolean(1));    // true</code></pre>
+
+<h2>9. Implicit Type Coercion</h2>
+<p>JavaScript automatically converts values during some operations.</p>
+<pre><code>console.log("10" + 5); // "105"
+console.log("10" - 5); // 5
+console.log("10" * 2); // 20</code></pre>
+<p>The <code>+</code> operator can concatenate strings, while arithmetic operators
+such as <code>-</code> and <code>*</code> coerce numeric strings to numbers.</p>
+
+<h2>10. Truthy and Falsy Values</h2>
+<p>When a value is used in a Boolean context, JavaScript treats it as truthy or falsy.</p>
+<p>Main falsy values:</p>
+<pre><code>false
+0
+-0
+0n
+""
+null
+undefined
+NaN</code></pre>
+
+<p>Examples of truthy values include non-empty strings, non-zero numbers, arrays,
+objects, and <code>true</code>.</p>
+<pre><code>console.log(Boolean("Hello")); // true
+console.log(Boolean("0"));     // true
+console.log(Boolean(0));       // false
+console.log(Boolean([]));      // true
+console.log(Boolean({}));      // true</code></pre>
+
+<h2>11. Practical Login Example</h2>
+<pre><code>let username = "";
+
+if (username) {
+  console.log("Username entered");
+} else {
+  console.log("Please enter username");
+}</code></pre>
+
+<h2>12. == vs ===</h2>
+<pre><code>console.log(5 == "5");  // true: coercion occurs
+console.log(5 === "5"); // false: type and value must match</code></pre>
+<p>In most application code, prefer strict equality (<code>===</code> and
+<code>!==</code>) to avoid unexpected coercion.</p>
+
+<h2>13. Classroom Quick Revision</h2>
+<ul>
+<li><strong>var:</strong> function-scoped, can be reassigned and redeclared.</li>
+<li><strong>let:</strong> block-scoped, can be reassigned, cannot be redeclared in the same scope.</li>
+<li><strong>const:</strong> block-scoped, cannot be reassigned, must be initialized.</li>
+<li><strong>typeof null:</strong> "object" due to a historical quirk.</li>
+<li><strong>typeof NaN:</strong> "number".</li>
+<li><strong>Explicit conversion:</strong> Number(), String(), Boolean().</li>
+<li><strong>Implicit coercion:</strong> JavaScript automatically converts types.</li>
+<li><strong>Falsy:</strong> false, 0, -0, 0n, "", null, undefined, NaN.</li>
+<li><strong>Truthy:</strong> almost everything else, including [] and {}.</li>
+</ul>
+</body>
+</html>

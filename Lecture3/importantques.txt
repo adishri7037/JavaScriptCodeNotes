@@ -1,0 +1,10 @@
+What are arithmetic, assignment, comparison, and logical operators in JavaScript? Explain each with suitable examples.
+What is the difference between == and === in JavaScript? Why is strict equality generally preferred?
+Explain the difference between != and !== with examples.
+What is operator precedence in JavaScript? Explain how parentheses/grouping can change the result of an expression.
+What is an expression in JavaScript? Explain with examples of arithmetic, comparison, and logical expressions.
+What are template literals? How are they different from traditional string concatenation using +?
+Explain any five commonly used JavaScript string methods such as trim(), includes(), slice(), replace(), and split() with examples.
+Differentiate between parseInt(), parseFloat(), and Number(). Give suitable examples where their results are different.
+What is NaN in JavaScript? Explain the difference between Number.isNaN() and the global isNaN() function.
+Explain commonly used Math methods such as Math.round(), Math.floor(), Math.ceil(), Math.abs(), Math.max(), Math.min(), and Math.random() with examples.

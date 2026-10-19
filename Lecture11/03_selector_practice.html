@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selector Practice</title>
+</head>
+<body>
+  <main>
+    <article id="profile-card" class="profile card">
+      <h1 class="profile-name">Priya Verma</h1>
+      <p class="profile-role">Frontend Developer</p>
+
+      <div class="contact">
+        <p>Email: priya@example.com</p>
+        <p>City: Delhi</p>
+      </div>
+
+      <ul class="skills">
+        <li data-level="advanced">HTML</li>
+        <li data-level="advanced">CSS</li>
+        <li data-level="intermediate">JavaScript</li>
+      </ul>
+    </article>
+  </main>
+
+  <script>
+    // Try these selectors one by one in DevTools Console:
+    console.log(document.querySelector("#profile-card"));
+    console.log(document.querySelector(".profile-name"));
+    console.log(document.querySelector("#profile-card .contact p"));
+    console.log(document.querySelectorAll(".skills > li"));
+    console.log(document.querySelectorAll(".skills li[data-level='advanced']"));
+    console.log(document.querySelectorAll(".profile, .contact"));
+  </script>
+</body>
+</html>

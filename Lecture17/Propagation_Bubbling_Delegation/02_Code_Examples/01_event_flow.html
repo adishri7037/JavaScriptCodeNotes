@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Flow Demo</title>
+  <style>
+    .box { padding: 30px; border: 2px solid #333; margin: 20px; }
+  </style>
+</head>
+<body>
+  <div class="box" id="outer">
+    Outer
+    <button id="inner">Click Me</button>
+  </div>
+
+  <script>
+    const outer = document.querySelector("#outer");
+    const inner = document.querySelector("#inner");
+
+    outer.addEventListener("click", () => {
+      console.log("1. Outer - bubbling");
+    });
+
+    outer.addEventListener("click", () => {
+      console.log("2. Outer - capturing");
+    }, { capture: true });
+
+    inner.addEventListener("click", (event) => {
+      console.log("3. Button target");
+      console.log("target:", event.target);
+      console.log("currentTarget:", event.currentTarget);
+      console.log("eventPhase:", event.eventPhase);
+    });
+  </script>
+</body>
+</html>

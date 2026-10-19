@@ -1,0 +1,20 @@
+IMPORTANT QUESTIONS
+
+1. What is the DOM and why do browsers create a DOM tree from HTML?
+2. Explain the relationship between HTML source code and the DOM.
+3. What is the document object in JavaScript?
+4. What is the difference between querySelector() and querySelectorAll()?
+5. Compare getElementById() with querySelector().
+6. What is the difference between HTMLCollection and NodeList?
+7. Explain descendant, child, adjacent-sibling and grouped CSS selectors with examples.
+8. What does getElementsByClassName() return?
+9. How can you inspect the DOM tree using browser DevTools?
+10. Write JavaScript to select all skills inside a profile section and print their text.
+
+PRACTICAL QUESTIONS
+
+1. Select a profile heading by ID and display its tagName.
+2. Select all paragraphs using querySelectorAll() and print their text.
+3. Select all elements with class "skill" using getElementsByClassName().
+4. Select only direct li children of #skill-list using querySelectorAll().
+5. Select an email field using a combined CSS selector.

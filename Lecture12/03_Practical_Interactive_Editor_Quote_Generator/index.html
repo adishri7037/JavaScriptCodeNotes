@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interactive Text Editor & Quote Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Interactive Text Editor & Quote Generator</h1>
+
+    <section class="panel" aria-labelledby="editorHeading">
+      <h2 id="editorHeading">Interactive Text Editor</h2>
+
+      <label for="editor">Enter your text</label>
+      <textarea id="editor" rows="8"
+        placeholder="Write something here..."></textarea>
+
+      <div class="controls">
+        <button id="uppercaseBtn">UPPERCASE</button>
+        <button id="lowercaseBtn">lowercase</button>
+        <button id="clearBtn">Clear</button>
+      </div>
+
+      <p id="editorStatus" aria-live="polite">0 characters · 0 words</p>
+      <div id="preview" class="preview" data-mode="plain"></div>
+    </section>
+
+    <section class="panel" aria-labelledby="quoteHeading">
+      <h2 id="quoteHeading">Quote Generator</h2>
+
+      <blockquote id="quoteText">Click “New Quote” to begin.</blockquote>
+      <p id="quoteAuthor" class="author"></p>
+
+      <div class="controls">
+        <button id="newQuoteBtn">New Quote</button>
+        <button id="copyQuoteBtn">Copy Quote</button>
+      </div>
+
+      <p id="quoteCategory" class="tag" aria-label="Quote category"></p>
+      <p id="quoteStatus" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Profile - DOM Traversal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Interactive Profile</h1>
+    <button id="themeBtn" type="button" aria-pressed="false">Toggle Theme</button>
+  </header>
+
+  <main class="container">
+    <section class="profile-card" id="profileCard">
+      <div class="avatar" aria-hidden="true">AS</div>
+      <div class="profile-content">
+        <p class="eyebrow">JavaScript Developer</p>
+        <h2 id="profileName">Aditya Sharma</h2>
+        <p id="profileBio">Frontend developer who enjoys building accessible and interactive web experiences.</p>
+        <div id="skills" class="skills" aria-label="Skills"></div>
+        <div class="actions">
+          <button class="profile-action" data-action="greet" type="button">Greet</button>
+          <button class="profile-action" data-action="highlight" type="button">Highlight Card</button>
+        </div>
+        <p id="profileMessage" class="message" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>FAQ</h2>
+      <div id="faqList" class="faq-list"></div>
+    </section>
+
+    <section class="panel quote-panel">
+      <h2>Random Quote</h2>
+      <blockquote id="quoteText">Click the button to get a quote.</blockquote>
+      <p id="quoteAuthor"></p>
+      <button id="quoteBtn" type="button">New Quote</button>
+    </section>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

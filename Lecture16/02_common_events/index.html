@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Common Events</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 30px auto; }
+    input, select, button { padding: 8px; margin: 5px 0; }
+    #log { background: #f3f3f3; padding: 12px; min-height: 80px; }
+  </style>
+</head>
+<body>
+  <h1>Common JavaScript Events</h1>
+
+  <button id="clickBtn">Click Event</button>
+  <br>
+
+  <label>
+    Type something:
+    <input id="textInput" type="text">
+  </label>
+  <p>Input value: <span id="inputValue">Nothing typed yet</span></p>
+
+  <label>
+    Choose a course:
+    <select id="courseSelect">
+      <option value="">-- Select --</option>
+      <option value="JavaScript">JavaScript</option>
+      <option value="CSS">CSS</option>
+      <option value="HTML">HTML</option>
+    </select>
+  </label>
+  <p id="selectedCourse">No course selected.</p>
+
+  <form id="demoForm">
+    <input id="nameInput" type="text" placeholder="Enter your name" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  <p>Keyboard status: <span id="keyStatus">Press a key...</span></p>
+  <div id="log"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

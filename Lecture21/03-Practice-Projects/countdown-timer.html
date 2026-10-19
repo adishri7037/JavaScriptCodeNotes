@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Countdown Timer</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f1f5f9;color:#0f172a;font-family:system-ui,sans-serif}
+.card{width:min(92vw,500px);padding:2rem;border-radius:22px;background:white;box-shadow:0 16px 45px #0f172a18;text-align:center}
+h1{margin-top:0}.display{font-size:4rem;font-weight:800;font-variant-numeric:tabular-nums;margin:1.2rem 0}
+input{width:90px;padding:.7rem;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem}button{padding:.7rem 1rem;margin:.35rem;border:0;border-radius:10px;background:#2563eb;color:white;font-weight:700;cursor:pointer}button.secondary{background:#475569}
+.note{color:#64748b}
+</style></head>
+<body><main class="card"><h1>Countdown Timer</h1>
+<label>Minutes <input id="minutes" type="number" min="0" max="999" value="1"></label>
+<label>Seconds <input id="seconds" type="number" min="0" max="59" value="0"></label>
+<div id="display" class="display">01:00</div>
+<button id="start">Start</button><button id="pause" class="secondary">Pause</button><button id="reset" class="secondary">Reset</button>
+<p id="status" class="note">Ready</p>
+<p class="note">Uses a deadline timestamp so delayed ticks do not accumulate drift.</p>
+</main>
+<script>
+const minutesInput = document.querySelector("#minutes");
+const secondsInput = document.querySelector("#seconds");
+const display = document.querySelector("#display");
+const statusText = document.querySelector("#status");
+let intervalId = null;
+let endAt = 0;
+let remainingMs = 60000;
+
+function readInputMs() {
+  const minutes = Math.max(0, Number(minutesInput.value) || 0);
+  const seconds = Math.min(59, Math.max(0, Number(secondsInput.value) || 0));
+  return (minutes * 60 + seconds) * 1000;
+}
+function format(ms) {
+  const totalSeconds = Math.ceil(Math.max(0, ms) / 1000);
+  return `${String(Math.floor(totalSeconds / 60)).padStart(2,"0")}:${String(totalSeconds % 60).padStart(2,"0")}`;
+}
+function render() { display.textContent = format(remainingMs); }
+function stopInterval() {
+  if (intervalId !== null) clearInterval(intervalId);
+  intervalId = null;
+}
+function tick() {
+  remainingMs = Math.max(0, endAt - Date.now());
+  render();
+  if (remainingMs <= 0) {
+    stopInterval();
+    statusText.textContent = "Time is up!";
+    alert("Time is up!");
+  }
+}
+document.querySelector("#start").addEventListener("click", () => {
+  if (intervalId !== null) return; // prevent duplicate intervals
+  if (remainingMs <= 0) remainingMs = readInputMs();
+  if (remainingMs <= 0) { statusText.textContent = "Enter a duration greater than zero."; return; }
+  endAt = Date.now() + remainingMs;
+  statusText.textContent = "Running";
+  intervalId = setInterval(tick, 200);
+  tick();
+});
+document.querySelector("#pause").addEventListener("click", () => {
+  if (intervalId !== null) {
+    remainingMs = Math.max(0, endAt - Date.now());
+    stopInterval();
+    render();
+    statusText.textContent = "Paused";
+  }
+});
+document.querySelector("#reset").addEventListener("click", () => {
+  stopInterval();
+  remainingMs = readInputMs();
+  render();
+  statusText.textContent = "Reset";
+});
+minutesInput.addEventListener("input", () => { if (intervalId === null) { remainingMs = readInputMs(); render(); }});
+secondsInput.addEventListener("input", () => { if (intervalId === null) { remainingMs = readInputMs(); render(); }});
+remainingMs = readInputMs(); render();
+</script></body></html>

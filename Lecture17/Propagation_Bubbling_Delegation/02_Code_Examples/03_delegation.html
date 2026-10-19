@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Delegation</title>
+</head>
+<body>
+  <ul id="list">
+    <li><button data-action="hello">First</button></li>
+    <li><button data-action="hello">Second</button></li>
+  </ul>
+
+  <button id="add">Add New Item</button>
+
+  <script>
+    const list = document.querySelector("#list");
+    const addButton = document.querySelector("#add");
+
+    // One listener handles all current and future buttons.
+    list.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-action]");
+
+      if (!button || !list.contains(button)) return;
+
+      console.log("Clicked:", button.textContent);
+    });
+
+    let count = 3;
+
+    addButton.addEventListener("click", () => {
+      const li = document.createElement("li");
+      li.innerHTML = `<button data-action="hello">Dynamic ${count}</button>`;
+      list.append(li);
+      count++;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order / Registration Simulator</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:2rem 1rem;min-height:100vh;background:#f1f5f9;color:#0f172a;font-family:system-ui,sans-serif}
+main{max-width:760px;margin:auto;background:white;border-radius:22px;padding:clamp(1.2rem,4vw,2rem);box-shadow:0 18px 50px #0f172a15}
+h1{margin-top:0}p{color:#475569}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+label{display:block;font-weight:650;margin:.6rem 0 .3rem}input,select{width:100%;padding:.75rem;border:1px solid #cbd5e1;border-radius:10px;font:inherit}
+button{padding:.75rem 1rem;margin:.5rem .35rem .5rem 0;border:0;border-radius:10px;background:#2563eb;color:white;font-weight:750;cursor:pointer}
+button.secondary{background:#475569}.check{display:flex;gap:.6rem;align-items:center;font-weight:500}.check input{width:auto}
+.status{margin:1rem 0;padding:1rem;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0}
+ul{padding-left:1.2rem}.pending{color:#64748b}.done{color:#15803d}.failed{color:#b91c1c}
+#log{background:#0f172a;color:#dbeafe;border-radius:12px;padding:1rem;min-height:110px;white-space:pre-wrap;font: .9rem/1.5 ui-monospace,monospace}
+small{color:#64748b}
+</style></head>
+<body><main>
+<h1>Order / Registration Simulator</h1>
+<p>Practise a multi-step asynchronous workflow with callbacks, success/error handling, and a simulated failure. No real order, payment, or account is created.</p>
+<div class="grid">
+  <div><label for="name">Full name</label><input id="name" placeholder="e.g. Aditi Sharma" value="Aditi Sharma"></div>
+  <div><label for="email">Email</label><input id="email" type="email" placeholder="you@example.com" value="aditi@example.com"></div>
+  <div><label for="flow">Workflow</label><select id="flow"><option value="order">Place an order</option><option value="registration">Register an account</option></select></div>
+  <div><label for="failure">Simulate failure at</label><select id="failure"><option value="none">No failure</option><option value="validation">Validation</option><option value="create">Create record</option><option value="payment">Payment / verification</option><option value="confirm">Confirmation</option><option value="notify">Send notification</option></select></div>
+</div>
+<label class="check"><input id="showDetails" type="checkbox" checked> Show detailed callback logs</label>
+<button id="start">Start workflow</button><button id="reset" class="secondary">Reset</button>
+<section class="status"><strong id="headline">Ready</strong><ul id="steps">
+<li class="pending">1. Validate input</li><li class="pending">2. Create record</li><li class="pending">3. Payment / verification</li><li class="pending">4. Confirm</li><li class="pending">5. Notify user</li>
+</ul><p id="summary">Fill in the details and start the workflow.</p></section>
+<h2>Execution log</h2><div id="log" aria-live="polite">Waiting for workflow…</div>
+<p><small>Study the code: each step accepts a callback with an error and result. Each step begins only after the previous step succeeds.</small></p>
+</main>
+<script>
+const $ = selector => document.querySelector(selector);
+const stepNames = ["Validate input", "Create record", "Payment / verification", "Confirm", "Notify user"];
+let running = false;
+function log(message) {
+  if ($("#showDetails").checked) {
+    const stamp = new Date().toLocaleTimeString();
+    $("#log").textContent += `\\n[${stamp}] ${message}`;
+  }
+}
+function updateStep(index, state, message) {
+  const items = $("#steps").children;
+  items[index].className = state;
+  items[index].textContent = `${index + 1}. ${stepNames[index]}${message ? " — " + message : ""}`;
+}
+function asyncStep(name, failAt, stepKey, work, callback) {
+  log(`${name}: callback registered`);
+  setTimeout(() => {
+    log(`${name}: callback executing`);
+    if (failAt === stepKey) {
+      const error = new Error(`Simulated failure during: ${name}`);
+      callback(error);
+      return;
+    }
+    try {
+      const result = work();
+      callback(null, result);
+    } catch (error) {
+      callback(error);
+    }
+  }, 650);
+}
+function finishError(error) {
+  running = false;
+  $("#headline").textContent = "Workflow failed";
+  $("#headline").className = "failed";
+  $("#summary").textContent = error.message + ". Fix the issue and try again.";
+  log(`ERROR: ${error.message}`);
+  $("#start").disabled = false;
+}
+function startWorkflow() {
+  if (running) return;
+  const name = $("#name").value.trim();
+  const email = $("#email").value.trim();
+  const flow = $("#flow").value;
+  const failAt = $("#failure").value;
+  running = true;
+  $("#start").disabled = true;
+  $("#headline").textContent = "Workflow running…";
+  $("#headline").className = "";
+  $("#summary").textContent = "Waiting for each asynchronous callback to complete.";
+  $("#log").textContent = "";
+  [...$("#steps").children].forEach((item, i) => updateStep(i, "pending", "waiting"));
+  log(`Starting ${flow} workflow for ${email || "(empty email)"}`);
+
+  asyncStep(stepNames[0], failAt, "validation", () => {
+    if (!name || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+      throw new Error("Enter a name and a valid email address");
+    }
+    return { name, email };
+  }, (error, formData) => {
+    if (error) { updateStep(0, "failed", error.message); finishError(error); return; }
+    updateStep(0, "done", "success");
+    asyncStep(stepNames[1], failAt, "create", () => ({
+      id: `${flow.toUpperCase()}-${Math.floor(10000 + Math.random() * 90000)}`,
+      ...formData, type: flow
+    }), (error, record) => {
+      if (error) { updateStep(1, "failed", error.message); finishError(error); return; }
+      updateStep(1, "done", `created ${record.id}`);
+      asyncStep(stepNames[2], failAt, "payment", () => ({
+        reference: `REF-${Math.floor(100000 + Math.random() * 900000)}`,
+        status: flow === "order" ? "payment approved (simulated)" : "email verified (simulated)"
+      }), (error, verification) => {
+        if (error) { updateStep(2, "failed", error.message); finishError(error); return; }
+        updateStep(2, "done", verification.status);
+        asyncStep(stepNames[3], failAt, "confirm", () => ({
+          ...record, status: flow === "order" ? "confirmed" : "registered",
+          reference: verification.reference
+        }), (error, confirmed) => {
+          if (error) { updateStep(3, "failed", error.message); finishError(error); return; }
+          updateStep(3, "done", confirmed.status);
+          asyncStep(stepNames[4], failAt, "notify", () => ({
+            sentTo: confirmed.email, message: "Notification sent (simulated)"
+          }), (error, notification) => {
+            if (error) { updateStep(4, "failed", error.message); finishError(error); return; }
+            updateStep(4, "done", notification.message);
+            running = false;
+            $("#headline").textContent = "Workflow completed successfully";
+            $("#headline").className = "done";
+            $("#summary").textContent = `${flow === "order" ? "Order" : "Registration"} ${confirmed.id} completed for ${confirmed.name}. Reference: ${confirmed.reference}.`;
+            log(`SUCCESS: ${notification.message} to ${notification.sentTo}`);
+            $("#start").disabled = false;
+          });
+        });
+      });
+    });
+  });
+}
+$("#start").addEventListener("click", startWorkflow);
+$("#reset").addEventListener("click", () => {
+  if (running) return;
+  $("#name").value = "";
+  $("#email").value = "";
+  $("#headline").textContent = "Ready";
+  $("#headline").className = "";
+  $("#summary").textContent = "Fill in the details and start the workflow.";
+  $("#log").textContent = "Waiting for workflow…";
+  [...$("#steps").children].forEach((item, i) => updateStep(i, "pending", ""));
+});
+</script></body></html>

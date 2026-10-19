@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript DOM Example</title>
+</head>
+<body>
+
+    <h1 id="title">Original Heading</h1>
+
+    <button id="btn">Change Heading</button>
+<button onclick="alert('Hello')">
+    Click
+</button>
+    <script>
+        const button = document.getElementById("btn");
+
+        button.addEventListener("click", function () {
+            document.getElementById("title").textContent =
+                "Heading Changed!";
+        });
+    </script>
+
+</body>
+</html>

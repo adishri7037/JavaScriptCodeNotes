@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Page - DOM Practical</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 30px auto; }
+    .profile-card { border: 1px solid #aaa; padding: 20px; border-radius: 8px; }
+    .skill { display: inline-block; margin: 4px; padding: 5px 8px; border: 1px solid #aaa; }
+  </style>
+</head>
+<body>
+  <main>
+    <section id="profile" class="profile-card">
+      <h1 class="profile-name">Aarav Singh</h1>
+      <p class="profile-role">B.Tech CSE Student</p>
+      <p class="profile-bio">Interested in web development and JavaScript.</p>
+
+      <h2>Skills</h2>
+      <ul id="skill-list">
+        <li class="skill">HTML</li>
+        <li class="skill">CSS</li>
+        <li class="skill">JavaScript</li>
+      </ul>
+
+      <h2>Contact</h2>
+      <div class="contact">
+        <p class="email">aarav@example.com</p>
+        <p class="city">Bareilly</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="04_existing_profile_practical.js"></script>
+</body>
+</html>

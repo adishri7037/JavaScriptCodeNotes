@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Button State</title>
+</head>
+<body>
+  <h1>Enable/Disable Submit</h1>
+
+  <form id="form" novalidate>
+    <label>
+      Name
+      <input id="name" name="name" type="text">
+    </label>
+
+    <label>
+      Confirm
+      <input id="confirm" name="confirm" type="checkbox">
+    </label>
+
+    <button id="submitButton" type="submit" disabled>Submit</button>
+  </form>
+
+  <script>
+    const form = document.querySelector("#form");
+    const nameInput = form.elements.name;
+    const confirmInput = form.elements.confirm;
+    const submitButton = document.querySelector("#submitButton");
+
+    function updateSubmitState() {
+      const valid = nameInput.value.trim().length >= 3 && confirmInput.checked;
+      submitButton.disabled = !valid;
+    }
+
+    nameInput.addEventListener("input", updateSubmitState);
+    confirmInput.addEventListener("change", updateSubmitState);
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      console.log("Submission allowed.");
+    });
+  </script>
+</body>
+</html>

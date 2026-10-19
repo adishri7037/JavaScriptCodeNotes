@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessible Inline Errors</title>
+  <style>
+    .error { color: #b00020; margin: 4px 0 12px; }
+    .invalid { border: 2px solid #b00020; }
+  </style>
+</head>
+<body>
+  <h1>Accessible Inline Errors</h1>
+
+  <form id="form" novalidate>
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email"
+           aria-describedby="emailError">
+    <p id="emailError" class="error" aria-live="polite"></p>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const form = document.querySelector("#form");
+    const email = form.elements.email;
+    const emailError = document.querySelector("#emailError");
+
+    function showError(input, message) {
+      input.classList.add("invalid");
+      input.setAttribute("aria-invalid", "true");
+      emailError.textContent = message;
+    }
+
+    function clearError(input) {
+      input.classList.remove("invalid");
+      input.removeAttribute("aria-invalid");
+      emailError.textContent = "";
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const value = email.value.trim();
+
+      if (!value) {
+        showError(email, "Email is required.");
+        email.focus();
+        return;
+      }
+
+      clearError(email);
+      console.log("Valid form.");
+    });
+  </script>
+</body>
+</html>

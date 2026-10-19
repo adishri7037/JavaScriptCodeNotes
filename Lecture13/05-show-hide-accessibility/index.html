@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Accessible Show/Hide</title>
+  <style>
+    .content[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Accessible Show/Hide</h1>
+  <button id="toggle" aria-expanded="false" aria-controls="content">
+    Show details
+  </button>
+  <div id="content" class="content" hidden>
+    This content is hidden using the HTML hidden state.
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

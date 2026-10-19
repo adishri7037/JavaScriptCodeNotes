@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modular Task Board</title>
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a;margin:0;padding:2rem 1rem}
+main{max-width:760px;margin:auto;background:white;padding:2rem;border-radius:20px;box-shadow:0 16px 45px #0f172a12}
+form{display:flex;gap:.6rem;flex-wrap:wrap}input{flex:1;min-width:180px;padding:.8rem;border:1px solid #cbd5e1;border-radius:10px;font:inherit}
+button{padding:.75rem 1rem;border:0;border-radius:10px;background:#2563eb;color:white;font-weight:700;cursor:pointer}
+li{display:flex;align-items:center;gap:.7rem;padding:.75rem 0;border-bottom:1px solid #e2e8f0}
+li span{flex:1}.done{text-decoration:line-through;color:#64748b}.remove{background:#b91c1c;padding:.45rem .65rem}
+#status{color:#475569;min-height:1.5em}small{color:#64748b}
+</style>
+</head>
+<body><main>
+<h1>Modular Task Board</h1>
+<p>This project is split into focused ES modules for data, UI, storage, and application startup.</p>
+<form id="taskForm"><input id="taskInput" required maxlength="120" placeholder="Add a task…"><button>Add task</button></form>
+<p id="status" role="status">Loading tasks…</p><ul id="taskList"></ul>
+<button id="reset">Reset sample data</button>
+<p><small>Run from a local HTTP server. Opening via file:// may block ES module imports.</small></p>
+</main>
+<script type="module" src="./src/main.js"></script>
+</body></html>

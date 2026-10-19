@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital Clock</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:#101827;color:#f8fafc;font-family:system-ui,sans-serif}
+.card{width:min(92vw,520px);padding:2rem;border:1px solid #334155;border-radius:24px;background:#1e293b;text-align:center;box-shadow:0 20px 60px #0005}
+h1{margin-top:0;font-size:1.5rem}.clock{font-size:clamp(2.8rem,10vw,4.5rem);font-variant-numeric:tabular-nums;font-weight:750;letter-spacing:.04em}.date{color:#cbd5e1;margin:.75rem 0 1.5rem}
+button{padding:.65rem 1rem;border:0;border-radius:10px;background:#38bdf8;color:#082f49;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body><main class="card">
+<h1>Digital Clock</h1><div id="clock" class="clock">--:--:--</div><div id="date" class="date">Loading date…</div>
+<button id="format">Switch to 12-hour format</button>
+<p><small>Uses setInterval for refreshing and Date for the actual time.</small></p>
+</main>
+<script>
+const clock = document.querySelector("#clock");
+const date = document.querySelector("#date");
+const formatButton = document.querySelector("#format");
+let use24Hour = true;
+function renderClock() {
+  const now = new Date();
+  clock.textContent = now.toLocaleTimeString("en-IN", {
+    hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: !use24Hour
+  });
+  date.textContent = now.toLocaleDateString("en-IN", {
+    weekday: "long", year: "numeric", month: "long", day: "numeric"
+  });
+}
+formatButton.addEventListener("click", () => {
+  use24Hour = !use24Hour;
+  formatButton.textContent = use24Hour ? "Switch to 12-hour format" : "Switch to 24-hour format";
+  renderClock();
+});
+renderClock();
+const clockInterval = setInterval(renderClock, 1000);
+// In a single-page app, clearInterval(clockInterval) when this view is disposed.
+</script></body></html>

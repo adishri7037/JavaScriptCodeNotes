@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>closest()</title>
+</head>
+<body>
+  <article class="card" data-id="101">
+    <h2>Product Card</h2>
+    <p>
+      Product description
+      <button class="delete-btn" type="button">Delete</button>
+    </p>
+  </article>
+  <script>
+    const deleteButton = document.querySelector(".delete-btn");
+    deleteButton.addEventListener("click", (event) => {
+      const card = event.target.closest(".card");
+      if (!card) {
+        return;
+      }
+      console.log("Found nearest card:", card);
+      console.log("Product ID:", card.dataset.id);
+    });
+  </script>
+</body>
+</html>

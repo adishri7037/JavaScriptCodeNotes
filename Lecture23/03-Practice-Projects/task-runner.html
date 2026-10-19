@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Promise Task Runner</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:2rem 1rem;background:#f1f5f9;color:#0f172a;font-family:system-ui,sans-serif}main{max-width:760px;margin:auto;background:white;padding:clamp(1.2rem,4vw,2rem);border-radius:22px;box-shadow:0 18px 50px #0f172a14}
+button{padding:.75rem 1rem;margin:.4rem .3rem .4rem 0;border:0;border-radius:10px;background:#2563eb;color:white;font-weight:700;cursor:pointer}button.secondary{background:#475569}button:disabled{opacity:.5;cursor:not-allowed}
+label{display:flex;gap:.6rem;align-items:center;margin:.8rem 0}select{padding:.6rem;border:1px solid #cbd5e1;border-radius:9px}
+li{margin:.55rem 0}.pending{color:#64748b}.running{color:#1d4ed8}.done{color:#15803d}.failed{color:#b91c1c}
+#log{background:#0f172a;color:#dbeafe;padding:1rem;border-radius:12px;white-space:pre-wrap;min-height:130px;font: .9rem/1.5 ui-monospace,monospace}
+p{color:#475569}
+</style></head><body><main>
+<h1>Promise-Based Task Runner</h1><p>Run a series of dependent tasks using Promise chaining. Choose how the runner should behave when a task fails.</p>
+<label>Fail this task:
+<select id="fail"><option value="none">No failure</option><option value="2">Task 2 — Load profile</option><option value="3">Task 3 — Save data</option><option value="4">Task 4 — Send report</option></select></label>
+<label>On failure:
+<select id="mode"><option value="stop">Stop after reporting error</option><option value="recover">Recover with fallback and continue</option></select></label>
+<button id="run">Run tasks</button><button id="clear" class="secondary">Clear log</button>
+<h2>Task status</h2><ol id="tasks"><li class="pending">Initialize</li><li class="pending">Load profile</li><li class="pending">Save data</li><li class="pending">Send report</li></ol>
+<h2>Execution log</h2><div id="log">Ready.</div><p id="status">Waiting to run.</p>
+<script>
+const $ = s => document.querySelector(s);
+const taskNames = ["Initialize", "Load profile", "Save data", "Send report"];
+let running = false;
+function log(message) { $("#log").textContent += `\\n${new Date().toLocaleTimeString()} ${message}`; }
+function setTask(i, cls, suffix="") {
+  $("#tasks").children[i].className = cls;
+  $("#tasks").children[i].textContent = `${taskNames[i]}${suffix ? " — " + suffix : ""}`;
+}
+function task(index, failAt, input) {
+  setTask(index, "running", "running…");
+  log(`Task ${index + 1} started; Promise pending`);
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (failAt === String(index + 1)) {
+        const error = new Error(`${taskNames[index]} failed (simulated)`);
+        setTask(index, "failed", error.message);
+        log(`Task ${index + 1} rejected`);
+        reject(error);
+        return;
+      }
+      const result = { previous: input, output: `${taskNames[index]} result` };
+      setTask(index, "done", "fulfilled");
+      log(`Task ${index + 1} fulfilled with "${result.output}"`);
+      resolve(result);
+    }, 600);
+  });
+}
+$("#run").addEventListener("click", () => {
+  if (running) return;
+  running = true;
+  $("#run").disabled = true;
+  $("#log").textContent = "Starting task chain…";
+  $("#status").textContent = "Running";
+  [...$("#tasks").children].forEach((_, i) => setTask(i, "pending", "waiting"));
+  const failAt = $("#fail").value;
+  const recover = $("#mode").value === "recover";
+  let chain = task(0, failAt, "input")
+    .then(result => task(1, failAt, result.output))
+    .then(result => task(2, failAt, result.output))
+    .then(result => task(3, failAt, result.output));
+
+  if (recover) {
+    chain = chain.catch(error => {
+      log(`Caught error: ${error.message}`);
+      log("Recovery: returning fallback result. Remaining tasks after the failed step are skipped in this simple demo.");
+      return { output: "fallback result", recovered: true };
+    });
+  }
+
+  chain.then(result => {
+    $("#status").textContent = result && result.recovered
+      ? "Recovered from failure."
+      : "All tasks completed successfully.";
+    log(result && result.recovered ? "Chain recovered." : "Chain fulfilled.");
+  }).catch(error => {
+    $("#status").textContent = `Stopped: ${error.message}`;
+    log(`Final catch: ${error.message}`);
+  }).finally(() => {
+    running = false;
+    $("#run").disabled = false;
+    log("finally(): cleanup complete; Run button enabled.");
+  });
+});
+$("#clear").addEventListener("click", () => {
+  if (running) return;
+  $("#log").textContent = "Ready.";
+  $("#status").textContent = "Waiting to run.";
+  [...$("#tasks").children].forEach((_, i) => setTask(i, "pending", ""));
+});
+</script></main></body></html>

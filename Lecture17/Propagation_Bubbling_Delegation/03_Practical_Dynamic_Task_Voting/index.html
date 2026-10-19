@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Task List - Event Delegation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Dynamic Task List</h1>
+    <p>One delegated listener handles complete and delete actions.</p>
+
+    <form id="taskForm">
+      <label for="taskInput">New task</label>
+      <input id="taskInput" name="task" required maxlength="100"
+             placeholder="Enter a task">
+      <button type="submit">Add Task</button>
+    </form>
+
+    <p id="taskCount">0 tasks</p>
+    <ul id="taskList" aria-live="polite"></ul>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

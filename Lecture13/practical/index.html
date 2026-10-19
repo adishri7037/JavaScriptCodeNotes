@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Theme Changer & Expandable FAQ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">JavaScript DOM Practical</p>
+      <h1>Theme Changer + Expandable FAQ</h1>
+    </div>
+    <button id="themeToggle" class="button" type="button"
+            aria-pressed="false">
+      🌙 Dark mode
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Theme Changer</h2>
+      <p>JavaScript changes the theme state; CSS custom properties handle the visuals.</p>
+      <div class="theme-preview" aria-live="polite">
+        Current theme: <strong id="themeName">Light</strong>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Expandable FAQ</h2>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button"
+                aria-expanded="false" aria-controls="answer1">
+          <span>What is classList?</span>
+          <span aria-hidden="true">+</span>
+        </button>
+        <div id="answer1" class="faq-answer" hidden>
+          classList provides methods for working with individual CSS classes.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button"
+                aria-expanded="false" aria-controls="answer2">
+          <span>Why prefer CSS classes for visual state?</span>
+          <span aria-hidden="true">+</span>
+        </button>
+        <div id="answer2" class="faq-answer" hidden>
+          Classes keep JavaScript focused on behavior while CSS owns presentation.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" type="button"
+                aria-expanded="false" aria-controls="answer3">
+          <span>When should inline styles be used?</span>
+          <span aria-hidden="true">+</span>
+        </button>
+        <div id="answer3" class="faq-answer" hidden>
+          Use them for genuinely dynamic values; use classes for reusable states and design rules.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

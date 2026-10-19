@@ -1,0 +1,57 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f5f5f5;
+  color: #222;
+}
+
+.container {
+  width: min(700px, 92%);
+  margin: 40px auto;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+}
+
+form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+}
+
+button {
+  cursor: pointer;
+  padding: 9px 14px;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.task-text {
+  flex: 1;
+}
+
+.completed .task-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}

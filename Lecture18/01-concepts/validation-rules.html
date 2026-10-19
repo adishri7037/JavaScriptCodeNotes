@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validation Rules</title>
+</head>
+<body>
+  <h1>Validation Rules Demo</h1>
+
+  <form id="validationForm" novalidate>
+    <label>
+      Username
+      <input id="username" name="username" type="text">
+    </label>
+
+    <label>
+      Age
+      <input id="age" name="age" type="number">
+    </label>
+
+    <label>
+      Email
+      <input id="email" name="email" type="email">
+    </label>
+
+    <button type="submit">Validate</button>
+  </form>
+
+  <script>
+    const form = document.querySelector("#validationForm");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const username = form.elements.username.value.trim();
+      const age = Number(form.elements.age.value);
+      const email = form.elements.email.value.trim();
+
+      const errors = [];
+
+      // Required check.
+      if (!username) {
+        errors.push("Username is required.");
+      }
+
+      // Length rule.
+      if (username && username.length < 3) {
+        errors.push("Username must contain at least 3 characters.");
+      }
+
+      // Range rule.
+      if (!Number.isFinite(age) || age < 18 || age > 100) {
+        errors.push("Age must be between 18 and 100.");
+      }
+
+      // Pattern rule.
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        errors.push("Enter a valid email address.");
+      }
+
+      console.log(errors.length ? errors : "Form is valid.");
+    });
+  </script>
+</body>
+</html>

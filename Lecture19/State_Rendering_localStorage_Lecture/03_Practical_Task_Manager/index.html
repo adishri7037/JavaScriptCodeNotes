@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Persistent Task Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>Persistent Task Manager</h1>
+    <p class="subtitle">Tasks are stored in localStorage and restored after refresh.</p>
+
+    <form id="taskForm">
+      <label for="taskInput">New task</label>
+      <div class="form-row">
+        <input id="taskInput" name="task" type="text" maxlength="100"
+               placeholder="Enter a task" required>
+        <button type="submit">Add Task</button>
+      </div>
+    </form>
+
+    <section class="toolbar" aria-label="Task controls">
+      <p id="taskCount">0 tasks</p>
+      <button id="clearCompleted" type="button">Clear Completed</button>
+      <button id="clearAll" type="button">Clear All</button>
+    </section>
+
+    <p id="emptyState" class="empty">No tasks yet. Add your first task.</p>
+    <ul id="taskList" aria-live="polite"></ul>
+
+    <p id="storageMessage" class="message" role="status" aria-live="polite"></p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

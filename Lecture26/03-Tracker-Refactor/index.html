@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clean Task Tracker</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 680px; margin: 3rem auto; padding: 0 1rem; }
+    form { display: flex; gap: .5rem; }
+    input { flex: 1; padding: .7rem; }
+    button { padding: .7rem; cursor: pointer; }
+    li { margin: .7rem 0; display: flex; align-items: center; gap: .6rem; }
+    .title { flex: 1; overflow-wrap: anywhere; }
+    .done { text-decoration: line-through; opacity: .65; }
+    #message { min-height: 1.5em; }
+  </style>
+</head>
+<body>
+  <h1>Task Tracker</h1>
+  <form id="task-form">
+    <input id="task-title" maxlength="120" placeholder="Add a task" aria-label="Task title">
+    <button type="submit">Add task</button>
+  </form>
+  <p id="message" role="status" aria-live="polite"></p>
+  <ul id="task-list"></ul>
+
+  <script>
+    "use strict";
+    const STORAGE_KEY = "clean-tracker.tasks";
+    const form = document.querySelector("#task-form");
+    const input = document.querySelector("#task-title");
+    const list = document.querySelector("#task-list");
+    const message = document.querySelector("#message");
+
+    function normalizeTitle(value) {
+      if (typeof value !== "string") return null;
+      const title = value.trim().replace(/\s+/g, " ");
+      return title && title.length <= 120 ? title : null;
+    }
+
+    function loadTasks() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const value = raw === null ? [] : JSON.parse(raw);
+        if (!Array.isArray(value)) return [];
+        return value.filter(task => task &&
+          typeof task.id === "string" &&
+          typeof task.title === "string" &&
+          typeof task.completed === "boolean");
+      } catch {
+        message.textContent = "Saved tasks could not be read. Starting with an empty list.";
+        return [];
+      }
+    }
+
+    function saveTasks(nextTasks) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(nextTasks));
+        return true;
+      } catch {
+        message.textContent = "Could not save tasks. Browser storage may be unavailable or full.";
+        return false;
+      }
+    }
+
+    let tasks = loadTasks();
+
+    function renderTasks() {
+      list.replaceChildren();
+      for (const task of tasks) {
+        const item = document.createElement("li");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = task.completed;
+        checkbox.setAttribute("aria-label", `Mark ${task.title} complete`);
+        checkbox.addEventListener("change", () => updateTask(task.id, checkbox.checked));
+
+        const title = document.createElement("span");
+        title.className = task.completed ? "title done" : "title";
+        title.textContent = task.title;
+
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.textContent = "Delete";
+        removeButton.addEventListener("click", () => removeTask(task.id));
+
+        item.append(checkbox, title, removeButton);
+        list.append(item);
+      }
+    }
+
+    function addTask(titleValue) {
+      const title = normalizeTitle(titleValue);
+      if (!title) {
+        message.textContent = "Enter a task title (1–120 characters).";
+        return;
+      }
+      const nextTasks = [...tasks, {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        title,
+        completed: false
+      }];
+      if (!saveTasks(nextTasks)) return;
+      tasks = nextTasks;
+      message.textContent = "Task added.";
+      renderTasks();
+    }
+
+    function updateTask(taskId, completed) {
+      const nextTasks = tasks.map(task =>
+        task.id === taskId ? { ...task, completed } : task
+      );
+      if (!saveTasks(nextTasks)) return;
+      tasks = nextTasks;
+      renderTasks();
+    }
+
+    function removeTask(taskId) {
+      const nextTasks = tasks.filter(task => task.id !== taskId);
+      if (nextTasks.length === tasks.length) return;
+      if (!saveTasks(nextTasks)) return;
+      tasks = nextTasks;
+      message.textContent = "Task deleted.";
+      renderTasks();
+    }
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      addTask(input.value);
+      if (normalizeTitle(input.value)) input.value = "";
+    });
+
+    renderTasks();
+  </script>
+</body>
+</html>

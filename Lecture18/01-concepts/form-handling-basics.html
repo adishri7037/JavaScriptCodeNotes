@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Handling Basics</title>
+</head>
+<body>
+  <h1>Form Handling Basics</h1>
+
+  <form id="demoForm">
+    <label for="name">Name</label>
+    <input id="name" name="name" type="text">
+
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email">
+
+    <button type="submit">Submit</button>
+  </form>
+
+  
+
+  <script>
+    const form = document.querySelector("#demoForm");
+
+    form.addEventListener("submit", function (event) {
+      // Stops the browser's default page reload/navigation.
+      event.preventDefault();
+
+      // FormData reads named controls from the form.
+      const data = new FormData(form);
+
+      // Read individual values.
+      const name = data.get("name");
+      const email = data.get("email");
+
+      console.log("Name:", name);
+      console.log("Email:", email);
+
+      // Object.fromEntries is useful when all named fields are simple values.
+      const values = Object.fromEntries(data.entries());
+      console.log("All values:", values);
+    });
+  </script>
+</body>
+</html>

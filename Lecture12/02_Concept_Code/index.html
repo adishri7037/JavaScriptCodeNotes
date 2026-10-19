@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DOM Content & Attributes concept</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    section { border: 1px solid #ccc; padding: 1rem; margin: 1rem 0; border-radius: 8px; }
+    img { max-width: 180px; display: block; margin-top: .5rem; }
+    code { background: #eee; padding: .1rem .3rem; }
+  </style>
+</head>
+<body>
+  <h1 id="pageTitle">DOM Content & atribute</h1>
+
+  <section>
+    <h2>1. textContent vs innerHTML</h2>
+    <p id="textDemo"></p>
+    <p id="htmlDemo"></p>
+  </section>
+
+  <section>
+    <h2>2. Element Properties</h2>
+    <input id="nameInput" value="Initial Name">
+    <button id="updateInputBtn">Update Value</button>
+    <p id="propertyOutput"></p>
+  </section>
+
+  <section>
+    <h2>3. Attribute API</h2>
+    <a id="demoLink" href="https://example.com">Example Link</a>
+    <br><br>
+    <button id="setAttrBtn">Set Attributes</button>
+    <button id="removeAttrBtn">Remove target</button>
+  </section>
+
+  <section>
+    <h2>4. data-* / dataset</h2>
+    <div id="quoteCard" data-author="Unknown" data-category="general">
+      Sample quote card
+    </div>
+    <button id="datasetBtn">Update dataset</button>
+  </section>
+
+  <section>
+    <h2>5. Image & Accessibility</h2>
+    <img id="demoImage" src="./../dummyImg.png" alt="Placeholder image">
+    <button id="imageBtn">Update image alt text</button>
+  </section>
+
+  <section>
+    <h2>6. Conditional Update</h2>
+    <label>Score:
+      <input id="scoreInput" type="number" min="0" max="100" value="75">
+    </label>
+    <button id="gradeBtn">Show Grade</button>
+    <p id="gradeOutput"></p>
+  </section>
+
+  <section>
+    <h2>7. Safe vs Unsafe Insertion</h2>
+    <input id="userInput" placeholder="Try: &lt;strong&gt;Hello&lt;/strong&gt;">
+    <button id="safeBtn">Safe textContent</button>
+    <p id="safeOutput"></p>
+    <p><strong>Teaching note:</strong> Do not put untrusted user input into <code>innerHTML</code>.</p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

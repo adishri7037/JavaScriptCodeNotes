@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Listeners Practical</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; max-width: 900px; margin: auto; padding: 24px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .card { border: 1px solid #ccc; border-radius: 10px; padding: 18px; }
+    button { padding: 8px 12px; cursor: pointer; margin: 4px; }
+    .like { font-size: 24px; }
+    #keyBox { padding: 20px; border: 2px dashed #aaa; margin-top: 10px; }
+    .active { border-color: black; }
+  </style>
+</head>
+<body>
+  <h1>Event Listeners Practical</h1>
+
+  <section class="card">
+    <h2>1. Counter</h2>
+    <p id="count">0</p>
+    <button id="decrease">−</button>
+    <button id="reset">Reset</button>
+    <button id="increase">+</button>
+  </section>
+
+  <section class="card">
+    <h2>2. Like Buttons</h2>
+    <div class="grid">
+      <article class="card">
+        <h3>JavaScript</h3>
+        <button class="likeBtn" data-post="JavaScript">
+          ❤️ Like <span class="likeCount">0</span>
+        </button>
+      </article>
+      <article class="card">
+        <h3>CSS</h3>
+        <button class="likeBtn" data-post="CSS">
+          ❤️ Like <span class="likeCount">0</span>
+        </button>
+      </article>
+      <article class="card">
+        <h3>HTML</h3>
+        <button class="likeBtn" data-post="HTML">
+          ❤️ Like <span class="likeCount">0</span>
+        </button>
+      </article>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3. Keyboard Interaction</h2>
+    <p>Press ArrowUp, ArrowDown, Enter or Space.</p>
+    <div id="keyBox">Keyboard status: waiting...</div>
+  </section>
+
+  <section class="card">
+    <h2>4. Input Event</h2>
+    <input id="name" type="text" placeholder="Type your name">
+    <p id="preview">Preview: </p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

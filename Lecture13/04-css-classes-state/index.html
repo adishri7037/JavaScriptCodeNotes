@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Classes as State</title>
+  <style>
+    .panel { padding: 20px; border: 2px solid #333; }
+    .panel.is-success { border-color: green; background: #e8f5e9; }
+    .panel.is-error { border-color: crimson; background: #ffebee; }
+  </style>
+</head>
+<body>
+  <div id="panel" class="panel">Visual state is controlled by CSS classes.</div>
+  <button id="success">Success</button>
+  <button id="error">Error</button>
+  <script src="script.js"></script>
+</body>
+</html>

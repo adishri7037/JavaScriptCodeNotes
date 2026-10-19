@@ -1,0 +1,48 @@
+DOM = browser's object/tree representation of the HTML document.
+
+document = JavaScript's main gateway to the DOM.
+
+querySelector() = first element matching a CSS selector.
+
+querySelectorAll() = all elements matching a CSS selector, returned as a static NodeList.
+
+getElementById() = find one element by ID.
+
+getElementsByClassName() = find elements by class, returning an HTMLCollection.
+
+getElementsByTagName() = find elements by tag name.
+
+CSS selectors such as .class, #id, div p, div > p, and [type="text"] can be used with querySelector methods.
+
+A NodeList can be indexed with [0], has .length, and commonly supports .forEach().
+
+
+HTML
+ │
+ ▼
+Browser parses HTML
+ │
+ ▼
+DOM Tree
+ │
+ ├── document
+ │
+ ├── elements
+ │     ├── IDs
+ │     ├── classes
+ │     └── tags
+ │
+ ▼
+JavaScript selectors
+ │
+ ├── querySelector()
+ ├── querySelectorAll()
+ ├── getElementById()
+ ├── getElementsByClassName()
+ └── getElementsByTagName()
+ │
+ ▼
+Elements / NodeList / HTMLCollection
+ │
+ ▼
+Read or modify the webpage

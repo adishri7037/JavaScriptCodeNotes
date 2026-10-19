@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>stopPropagation Demo</title>
+</head>
+<body>
+  <div id="parent">
+    <button id="child">Click Me</button>
+  </div>
+
+  <script>
+    const parent = document.querySelector("#parent");
+    const child = document.querySelector("#child");
+
+    parent.addEventListener("click", () => {
+      console.log("Parent listener");
+    });
+
+    child.addEventListener("click", (event) => {
+      console.log("Button listener");
+
+      // Uncomment to prevent the event from bubbling to the parent:
+      event.stopPropagation();
+    });
+  </script>
+</body>
+</html>

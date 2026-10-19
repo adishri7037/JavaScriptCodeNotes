@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>parentElement and children</title>
+</head>
+<body>
+  <section id="profile">
+    <h2>Profile</h2>
+    <p>Learning DOM traversal.</p>
+    <button id="inspectBtn">Inspect</button>
+  </section>
+
+  <script>
+    const button = document.querySelector("#inspectBtn");
+    const profile = document.querySelector("#profile");
+
+    console.log("Button parent:", button.parentElement);
+    console.log("Profile children:", profile.children);
+    console.log("First child:", profile.children[0]);
+    console.log("Child count:", profile.children.length);
+  </script>
+</body>
+</html>

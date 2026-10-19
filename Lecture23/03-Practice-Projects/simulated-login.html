@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Promise Login Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:1rem;background:#e2e8f0;color:#0f172a;font-family:system-ui,sans-serif}
+main{width:min(94vw,500px);background:white;padding:2rem;border-radius:22px;box-shadow:0 18px 50px #0f172a18}label{display:block;font-weight:650;margin:.8rem 0 .35rem}input{width:100%;padding:.8rem;border:1px solid #cbd5e1;border-radius:10px;font:inherit}
+button{margin-top:1rem;padding:.8rem 1rem;border:0;border-radius:10px;background:#2563eb;color:white;font-weight:750;cursor:pointer}button:disabled{opacity:.5}
+#message{margin-top:1rem;padding:1rem;border-radius:10px;background:#f8fafc;white-space:pre-wrap}.success{color:#166534;background:#f0fdf4!important}.error{color:#991b1b;background:#fef2f2!important}.note{color:#64748b;font-size:.9rem}
+</style></head><body><main>
+<h1>Simulated Login</h1><p>Learn Promise chaining, rejection handling, and finally-based loading cleanup.</p>
+<form id="form"><label for="email">Email</label><input id="email" type="email" autocomplete="username" value="student@example.com" required>
+<label for="password">Demo password</label><input id="password" type="password" autocomplete="current-password" value="learn123" required>
+<button id="submit" type="submit">Log in</button></form>
+<div id="message" aria-live="polite">Demo credentials: student@example.com / learn123</div>
+<p class="note">Front-end simulation only. Do not enter real credentials. This is not secure authentication.</p>
+<script>
+const form = document.querySelector("#form");
+const submit = document.querySelector("#submit");
+const message = document.querySelector("#message");
+function setMessage(text, type="") { message.textContent = text; message.className = type; }
+function fakeRequest(work, ms=500) {
+  return new Promise((resolve, reject) => setTimeout(() => {
+    try { resolve(work()); } catch (error) { reject(error); }
+  }, ms));
+}
+function authenticate(email, password) {
+  return fakeRequest(() => {
+    if (email !== "student@example.com" || password !== "learn123") {
+      const error = new Error("Invalid email or password.");
+      error.code = "INVALID_CREDENTIALS";
+      throw error;
+    }
+    return { id: 42, name: "Student", email };
+  });
+}
+function loadProfile(user) {
+  return fakeRequest(() => ({ ...user, role: "Learner", lastLogin: new Date().toLocaleString() }), 350);
+}
+form.addEventListener("submit", event => {
+  event.preventDefault();
+  submit.disabled = true;
+  setMessage("Signing in…");
+  const email = document.querySelector("#email").value.trim();
+  const password = document.querySelector("#password").value;
+  Promise.resolve()
+    .then(() => {
+      if (!email || !password) throw new Error("Email and password are required.");
+      return authenticate(email, password);
+    })
+    .then(user => {
+      setMessage("Credentials accepted. Loading profile…");
+      return loadProfile(user);
+    })
+    .then(profile => {
+      setMessage(`Welcome, ${profile.name}!\\nRole: ${profile.role}\\nDemo login time: ${profile.lastLogin}`, "success");
+    })
+    .catch(error => {
+      setMessage(`Login failed: ${error.message}`, "error");
+    })
+    .finally(() => {
+      submit.disabled = false;
+    });
+});
+</script></main></body></html>
